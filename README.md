@@ -1,55 +1,64 @@
 # Build your own Java RAG AI Agent
 
- ⬅ This is the next workshop step after the [introduction step](../workshop-intro).
+ ⬅ This is the next workshop step after the [requirements step](../workshop-intro-requirements).
 
-## Requirements Setup
+## Code, moar code, MOAR CODE
 
- 🙇‍ The workshop will use the services: OpenAI, Tavily, and AstraDB. You will need accounts and api keys for each of these.
-
-
-
-### Sign up for Astra DB ✍️
-
-Go to astra.datastax.com, sign-in, and create a vector-capable Astra database.
-- Get the Application Token for your database, also in the right pane.
-- You need the API Endpoint found in the right pane underneath Database details.
-
-![astra-signup](./src/assets/astra-signup.png)
+ 🤩 The step introduces the initial basic concepts of an AI Agent
+- LLM requests, and 
+- Prompt Engineering
 
  
+ ♻️ This step introduces the following technologies and techniques
+- Java 21
+- Maven build system
+- OpenAI
+- Spring-AI for GenAI and RAG framework,
+- Spring Boot for simple http server and IoC containerisation,
+- Vaadin for simple java-based web UI
+- Decorator and Delegation pattern to "chain" AI capabilities together.
 
-### Create Astra Namespace
 
-- Create Namespace “datastax_ai_agent”
+## Configure and Build
 
-![astra-namespace](./src/assets/astra-namespace.png)
+ 🐢 Configure the project like:
+```
+open credentials.txt
 
- ⚠️ Make sure you have full permissions on this new namespace.
-Permissions are found under left pane "Settings → Roles → ︙ → Edit Role → select all keyspaces".
+source credentials.txt
+```
 
+ ☕️ Build the project like:
+```
+./mvnw clean install
+```
 
-### Sign up for OpenAI ✍️
+ 🏃🏿 Run the project like:
+```
+./mvnw clean spring-boot:run
+```
 
-- Create an [OpenAI account](https://platform.openai.com/signup), or sign in.
-- Navigate to the [API key page](https://platform.openai.com/account/api-keys) and create a new Secret Key, optionally naming the key.
+ 🧙🏻‍♀️ If you need or want to debug the project, do:
+```
+./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+```
 
-![openai-signup](./src/assets/openai-signup.png)
- 
+## Ask some questions…
 
-### Sign up for Tavily ✍️
+ 👩‍💻 Open in a browser http://localhost:8080
+ and ask your chatbot some questions.
 
-- Create an [Tavily account](https://app.tavily.com/sign-in), or sign in.
-- Navigate to the [API key page](https://app.tavily.com/home) and copy your API Key.
+It's pretty limited, the application remains stateless and has a static prompt.
 
-![tavily-signup](./src/assets/tavily-signup.png)
+ 🔍 Explore where these limitations in its answers are.
 
- 
+ ℹ️ The prompt being sent to OpenAI is logged as `info` in your terminal.
 
 ## Next… 
 
- 💪🏽 To move on to the first step, [step-0](../workshop-step-0), do the following:
+ 💪🏽 To move on to [step-1](../workshop-step-1) do the following:
 ```
-git switch workshop-step-0
+git switch workshop-step-1
 ```
 
 
@@ -59,4 +68,3 @@ git switch workshop-step-0
 
 *** 
 All work is copyrighted to DataStax, Inc
-  
