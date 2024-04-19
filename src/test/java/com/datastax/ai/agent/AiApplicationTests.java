@@ -17,13 +17,36 @@
 package com.datastax.ai.agent;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+
+import org.testcontainers.containers.CassandraContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
+@SpringBootTest()
+@Testcontainers
 class AiApplicationTests {
 
-	@Test
-	void test() {
-	}
+    static final DockerImageName DEFAULT_IMAGE_NAME = DockerImageName.parse("cassandra");
 
+    @Container
+    static CassandraContainer cassandraContainer = new CassandraContainer(DEFAULT_IMAGE_NAME.withTag("5.0"));
+
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
+
+    @Test
+    void test() {
+    }
+
+    @DynamicPropertySource
+    static void props(DynamicPropertyRegistry registry) {
+        registry.add("spring.cassandra.contactPoints", () -> cassandraContainer.getContactPoint().getHostString());
+        registry.add("spring.cassandra.port", () -> String.valueOf(cassandraContainer.getContactPoint().getPort()));
+        registry.add("spring.cassandra.localDatacenter", () -> cassandraContainer.getLocalDatacenter());
+    }
 }
