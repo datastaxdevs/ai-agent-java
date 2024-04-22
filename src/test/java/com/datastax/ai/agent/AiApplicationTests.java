@@ -18,8 +18,12 @@ package com.datastax.ai.agent;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.transformers.TransformersEmbeddingModel;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
@@ -36,6 +40,11 @@ class AiApplicationTests {
 
     @Container
     static CassandraContainer cassandraContainer = new CassandraContainer(DEFAULT_IMAGE_NAME.withTag("5.0"));
+
+    @Bean
+    EmbeddingModel getEmbeddingClient() {
+        return new TransformersEmbeddingModel();
+    }
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
 
