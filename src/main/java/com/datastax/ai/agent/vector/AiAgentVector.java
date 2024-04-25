@@ -34,7 +34,7 @@ import org.springframework.ai.vectorstore.SearchRequest;
 
 public class AiAgentVector extends AiAgentDelegator<Object> {
 
-    private static final int CHAT_DOCUMENTS_SIZE = 3;
+    private static final int CHAT_DOCUMENTS_SIZE = 10;
     private static final int MAX_DOCUMENT_WORDS = 2000;
 
     private final CassandraVectorStore store;

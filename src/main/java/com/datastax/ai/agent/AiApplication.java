@@ -23,6 +23,7 @@ import java.util.UUID;
 import com.datastax.ai.agent.base.AiAgent;
 import com.datastax.ai.agent.history.AiAgentSession;
 import com.datastax.ai.agent.llmCache.AiAgentSessionVector;
+import com.datastax.ai.agent.reranking.AiAgentReranker;
 import com.datastax.ai.agent.vector.AiAgentVector;
 import com.datastax.oss.driver.api.core.CqlSession;
 
@@ -70,7 +71,8 @@ public class AiApplication implements AppShellConfigurator {
             EmbeddingModel embeddingModel) {
 
         AiAgentSession session = AiAgentSession.create(baseAgent, cqlSession);
-        AiAgentVector vector = AiAgentVector.create(session, store);
+        AiAgentReranker reranker = AiAgentReranker.create(session);
+        AiAgentVector vector = AiAgentVector.create(reranker, store);
         return AiAgentSessionVector.create(vector, cqlSession, embeddingModel);
     }
 
