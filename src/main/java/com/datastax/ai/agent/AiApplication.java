@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.datastax.ai.agent.base.AiAgent;
+import com.datastax.ai.agent.broadbandStats.AiAgentFccBroadbandDataTool;
 import com.datastax.ai.agent.history.AiAgentSession;
 import com.datastax.ai.agent.llmCache.AiAgentSessionVector;
 import com.datastax.ai.agent.reranking.AiAgentReranker;
@@ -75,7 +76,8 @@ public class AiApplication implements AppShellConfigurator {
         AiAgentReranker reranker = AiAgentReranker.create(session);
         AiAgentVector vector = AiAgentVector.create(reranker, store);
         AiAgentTavily tavily = AiAgentTavily.create(vector);
-        return AiAgentSessionVector.create(tavily, cqlSession, embeddingModel);
+        AiAgentFccBroadbandDataTool fcc = AiAgentFccBroadbandDataTool.create(tavily);
+        return AiAgentSessionVector.create(fcc, cqlSession, embeddingModel);
     }
 
     @Route("")
