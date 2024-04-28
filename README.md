@@ -1,30 +1,47 @@
 # Build your own Java RAG AI Agent
 
- ⬅ This is the next workshop step after the [step-4](../workshop-step-4).
+ ⬅ This is the next workshop step after the [step-5](../workshop-step-5).
 
 ## Code, moar code, MOAR CODE
 
- 🤩 The step adds the concepts
-- Hybrid Search
-- including online search results
+ 🤩 The step adds the concept
+- LLM Function Calling
+- Using ChatGPT to explain unknown datasets
 
-♻️ And introduces the following technologies and techniques
-- Tavily.com online search service
-- Spring REST Clients
-
-
-This step introduces the decorating AI Agent `AiAgentTavily`.  With the use of the `TAVILY_API_KEY` env var is uses the api.tavily.com service to fetch online search results.
-
-This further enriches the prompt and the LLM's response, especially when information retrieved is recently published and unique.  It also allows the LLM's response to include reference links to sources and suggested further readings.
+♻️ And introduces the following technologies, techniques and data
+- ChatGPT for schema and CQL assist
+- dsbulk
+- FCC's Measuring Broadband dataset
 
 
- 👷‍♂️ Tavily also has a news search which can be particularly useful for including recent information models are not trained on.
+This step introduces the service `FccBroadbandDataService`, a function wrapper around it `FccBroadbandDataTool`, and a decorating Agent `AiAgentFccBroadbandDataTool` that tells the LLM of the function it can take advantage of.
 
- ⚠️ Online search context is of arbitary length.  We want to include multiple results for diversity but have to keep the prompt within its window size, so the contents within each search results is trimmed as needed.
+ 👩‍💻  The LLM uses the `@Description` from `FccBroadbandDataTool` to know when to use the function.
+
+
+ 🔎 To see changes this step introduces use `git diff workshop-step-5..workshop-step-6`.
+
+
+## Download and Insert the FCC’s Broadband dataset
+
+1. Download FCC’s “Broadband data”
+https://www.fcc.gov/oet/mba/raw-data-releases
+ → https://data.fcc.gov/download/measuring-broadband-america/2023/data-raw-2023-jul.tar.gz
+2. Unzip it
+3. With `curr_datausage.csv` ask ChatGPT to
+    a. Explain the schema – ”Tell me what the following csv dataset is”
+    b. Create a CQL table – ”Create a Cassandra CQL schema for this data, explain your choices”
+        i. Make sure `unit_id` is of type ` INT ` and dtime is of type ` TIMESTAMP `
+    c. Ask how to load it into AstraDB – ”What's the quickest way to load that data into Cassandra”
+        i. Use the dsbulk approach
+
+## Schema and Upload
+
+- Using the informtion learnt from ChatGPT above, create a table `datastax_ai_agent.network_traffic`.
+- Adjust `FccBroadbandDataService` to write and read to columns as the schema you have created.
+- Use dsbulk to upload the whole csv file into AstraDB. It shouldn't take more than a few seconds.
 
 ## Build
-
- 🔎 To see changes this step introduces use `git diff workshop-step-4..workshop-step-5`.
 
 
  🏃🏿 Run the project like:
@@ -36,18 +53,16 @@ This further enriches the prompt and the LLM's response, especially when informa
 ## Ask some questions…
 
  👩‍💻 Open in a browser http://localhost:8080
- and ask your chatbot some questions that are about recent affairs only available with online searches.
+ and ask your chatbot some questions about a given unit_id, over a given period of time.  This unit_id and the time period needs to exist in the data you uploaded.
 
-Compare what is put into the prompt and how the LLM uses it.
-
- 🧐 What are the limitations of these results ? How could the queries be made more specific to a) what is really be asked at the current point in the conversation, and b) what the LLM actually needs in complimenting/missing information compared to what it has access to already ?
+Look into the prompt and how the LLM puts the results of the function call into it.
 
 
 ## Next…
 
- 💪🏽 To move on to [step-6](../workshop-step-6), do the following:
+ 💪🏽 To move on to [step-7](../workshop-step-7), do the following:
 ```
-git switch workshop-step-6
+git switch workshop-step-7
 ```
 
 
