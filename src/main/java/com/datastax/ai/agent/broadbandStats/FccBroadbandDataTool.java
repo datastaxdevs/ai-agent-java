@@ -16,12 +16,9 @@
  */
 package com.datastax.ai.agent.broadbandStats;
 
-import java.util.function.Function;
-
-import com.datastax.ai.agent.broadbandStats.FccBroadbandDataService.Request;
-import com.datastax.ai.agent.broadbandStats.FccBroadbandDataService.Response;
 import com.datastax.oss.driver.api.core.CqlSession;
 
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -31,7 +28,10 @@ public class FccBroadbandDataTool {
 
     @Bean
     @Description("Get device data usage over a period of time")
-    public Function<Request, Response> fccBroadbandDataService(CqlSession cqlSession) {
-        return new FccBroadbandDataService(cqlSession);
+    public FccBroadbandDataService fccBroadbandDataService(
+            CqlSession cqlSession,
+            EmbeddingModel embeddingModel) {
+
+        return new FccBroadbandDataService(cqlSession, embeddingModel);
     }
 }
